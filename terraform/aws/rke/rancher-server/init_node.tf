@@ -74,6 +74,20 @@ module "rancher_sg" {
       cidr_blocks = "0.0.0.0/0"
     },
     {
+      from_port   = 2379
+      to_port     = 2379
+      protocol    = "tcp"
+      description = "etcd client requests"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 2380
+      to_port     = 2380
+      protocol    = "tcp"
+      description = "etcd peer communication"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
       from_port   = 6443
       to_port     = 6443
       protocol    = "tcp"
@@ -85,6 +99,20 @@ module "rancher_sg" {
       to_port     = 10248
       protocol    = "tcp"
       description = "External rancher Access"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 8472
+      to_port     = 8472
+      protocol    = "udp"
+      description = "Canal/Flannel VXLAN overlay networking"
+      cidr_blocks = "0.0.0.0/0"
+    },
+    {
+      from_port   = 10250
+      to_port     = 10250
+      protocol    = "tcp"
+      description = "kubelet"
       cidr_blocks = "0.0.0.0/0"
     },
     {

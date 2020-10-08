@@ -1,20 +1,21 @@
 resource "rke_cluster" "cluster" {
+  kubernetes_version = "v1.19.2-rancher1-1"
   cloud_provider {
     name = "aws"
   }
   nodes {
-    address          = aws_eip.rancher_elastic_ip.public_ip
-    internal_address = local.rancher_ip
-    user             = "root"
-    ssh_key          = file(var.ssh_priv_key)
-    role             = ["controlplane", "worker", "etcd"]
+    address            = aws_eip.rancher_elastic_ip.public_ip
+    internal_address   = local.rancher_ip
+    user               = "root"
+    ssh_key            = file(var.ssh_priv_key)
+    role               = ["controlplane", "worker", "etcd"]
   }
   ingress {
-    provider         = "nginx"
-    options          = {
+    provider = "nginx"
+    options = {
       "use-forwarded-headers" = "true"
     }
-    extra_args       = {
+    extra_args = {
       "report-node-internal-ip-address" = ""
     }
   }

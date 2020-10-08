@@ -2,10 +2,10 @@ data "template_file" "init-rancher-worker" {
   template = file("${path.module}/files/rancher-worker.tpl.sh")
 
   vars = {
-    ssh_public_keys     = var.public_keys
-    ssh_private_key     = tls_private_key.rancher_key.private_key_pem
-    rancher_domain      = local.rancher_domain
-    rancher_password    = random_password.rancher_pass.result
+    ssh_public_keys  = var.public_keys
+    ssh_private_key  = tls_private_key.rancher_key.private_key_pem
+    rancher_domain   = local.rancher_domain
+    rancher_password = random_password.rancher_pass.result
   }
   depends_on = [
     null_resource.configure_rancher

@@ -7,7 +7,7 @@ variable "ssh_priv_key" {
 }
 
 variable "kube_config_path" {
-  default     = "./kube_config_cluster.yml"
+  default = "./kube_config_cluster.yml"
 }
 
 variable "instance_type" {

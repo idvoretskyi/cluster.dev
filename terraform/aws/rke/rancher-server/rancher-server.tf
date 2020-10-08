@@ -22,15 +22,24 @@ resource "null_resource" "rancher_namespace" {
 # Deploy  with Helm provider
 resource "helm_release" "rancher" {
   name       = "rancher"
-  repository = "https://releases.rancher.com/server-charts/stable"
+  repository = "https://releases.rancher.com/server-charts/latest"
   chart      = "rancher"
   namespace  = "cattle-system"
   depends_on = [
-    null_resource.rancher_namespace
+    null_resource.rancher_namespace,
+    helm_release.cert_manager,
   ]
+  # set {
+  #   name  = "tls"
+  #   value = "external"
+  # }
   set {
-    name  = "tls"
-    value = "external"
+    name  = "ingress.tls.source"
+    value = "letsEncrypt"
+  }
+  set {
+    name  = "debug"
+    value = "true"
   }
   set {
     name  = "hostname"
@@ -42,21 +51,22 @@ data "template_file" "configure_rancher" {
   template = file("${path.module}/files/set_pass.tpl.sh")
 
   vars = {
-    rancher_domain = local.rancher_domain
+    rancher_domain   = local.rancher_domain
     rancher_password = random_password.rancher_pass.result
   }
 }
 
 resource "null_resource" "wait_rancher_ready" {
   provisioner "local-exec" {
-    command = "until curl -s 'https://${local.rancher_domain}/'; do sleep 2; echo waiting rancher ready; done"
+    command = "until curl -s 'https://${local.rancher_domain}/' --insecure; do sleep 2; echo waiting rancher ready; done"
   }
   provisioner "local-exec" {
     when    = destroy
     command = "exit 0"
   }
   depends_on = [
-    helm_release.rancher
+    helm_release.rancher,
+    # aws_lb_listener.https_ingress
   ]
 }
 
