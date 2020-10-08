@@ -1,0 +1,18 @@
+installed: true
+name: gh-88-v2
+provider:
+  type: aws
+  region: eu-central-1
+  availability_zones:
+    - eu-central-1b
+    - eu-central-1c
+  vpc: default
+  domain: cluster.dev
+  provisioner:
+    type: minikube
+    instanceType: m5.large
+addons:
+  nginx-ingress: true
+  cert-manager: true
+apps:
+  - /kubernetes/apps/samples
