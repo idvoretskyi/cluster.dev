@@ -1,4 +1,4 @@
-installed: true
+installed: false
 name: gh-88-v2
 provider:
   type: aws
