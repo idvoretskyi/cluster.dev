@@ -1,5 +1,5 @@
 installed: false
-name: gh-88-v2
+name: gh-88-v2-cluster.dev
 provider:
   type: aws
   region: eu-central-1
